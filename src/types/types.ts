@@ -1,9 +1,9 @@
 export type CreateUserProps = {
   clerkId?: string;
-  email: string;
-  fName: string;
-  lName: string;
-  username: string;
+  email?: string;
+  fName?: string;
+  lName?: string;
+  username?: string;
   image?: string;
 };
 
