@@ -9,13 +9,6 @@ export default clerkMiddleware(async (auth, request) => {
   if (!userId && !isPublicRoute(request)) {
     // return redirectToSignIn({ returnBackUrl: request.url });
     auth().protect();
-
-    const user = await getUserByClerkId(userId!);
-    console.log(user)
-
-    if (user.role === 'USER' && request.url.startsWith('/admin')) {
-      NextResponse.redirect('/unauthorized')
-    }
   }
 
   if (userId && !isPublicRoute(request)) {
