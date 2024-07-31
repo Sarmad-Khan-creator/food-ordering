@@ -11,9 +11,10 @@ export default clerkMiddleware(async (auth, request) => {
     auth().protect();
 
     const user = await getUserByClerkId(userId!);
+    console.log(user)
 
     if (user.role === 'USER' && request.url.startsWith('/admin')) {
-      NextResponse.redirect('/unauthorized');
+      NextResponse.redirect('/unauthorized')
     }
   }
 
