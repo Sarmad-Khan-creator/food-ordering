@@ -24,9 +24,9 @@ const UserSchema = new Schema({
   clerkId: { type: String, required: true },
   role: { type: String, enum: ['USER', 'ADMIN', 'OWNER'], default: 'USER' },
   email: { type: String, required: true, unique: true },
-  fName: { type: String, required: true },
-  lName: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
+  fName: { type: String },
+  lName: { type: String },
+  username: { type: String, unique: true },
   image: String,
   address: {
     addressLine1: String,

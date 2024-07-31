@@ -80,12 +80,12 @@ const SignUpForm = ({ handleSignup }: Props) => {
             Create Account to continue
           </h2>
         </div>
-        <div className="flex flex-col gap-5 md:flex-row">
+        <div className="w-full flex flex-col gap-5 md:flex-row">
           <FormField
             name="firstName"
             control={form.control}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex-1">
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
                   <Input placeholder="First Name" {...field} />
@@ -98,7 +98,7 @@ const SignUpForm = ({ handleSignup }: Props) => {
             name="lastName"
             control={form.control}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex-1">
                 <FormLabel>Last Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Last Name" {...field} />
