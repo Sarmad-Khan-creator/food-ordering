@@ -1,18 +1,22 @@
 export type CreateUserProps = {
   clerkId?: string;
   email?: string;
-  fName?: string;
-  lName?: string;
+  name: string;
   username?: string;
   image?: string;
 };
 
 export type SignUpProps = {
+  clerkId?: string;
+  email?: string;
   password: string;
-} & CreateUserProps;
+  fName: string;
+  lName: string;
+  username?: string;
+  image?: string;
+};
 
 export type UpdateUserProps = {
-  fName?: string;
-  lName?: string;
+  name: string;
   image?: string;
 };

@@ -54,8 +54,7 @@ export async function POST(req: Request) {
     const mongoUser = await createUser({
       clerkId: id,
       email: email_addresses[0].email_address,
-      fName: first_name || '',
-      lName: last_name || '',
+      name: `${first_name} ${last_name}` || '',
       username: username!,
       image: image_url,
     });
@@ -67,12 +66,11 @@ export async function POST(req: Request) {
     const { id, image_url, first_name, last_name } = evt.data;
 
     const updatedUser = await updateUser(id, {
-      fName: first_name || '',
-      lName: last_name || '',
+      name: `${first_name} ${last_name}` || '',
       image: image_url,
     });
 
-    return NextResponse.json({ message: 'OK', user: updateUser });
+    return NextResponse.json({ message: 'OK', user: updatedUser });
   }
 
   if (eventType === 'user.deleted') {

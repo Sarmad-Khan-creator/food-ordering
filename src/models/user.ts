@@ -4,8 +4,7 @@ export interface IUser extends Document {
   clerkId: string;
   role: string;
   email: string;
-  fName: string;
-  lName: string;
+  name: string;
   username: string;
   image: string;
   address: {
@@ -24,8 +23,7 @@ const UserSchema = new Schema({
   clerkId: { type: String, required: true },
   role: { type: String, enum: ['USER', 'ADMIN', 'OWNER'], default: 'USER' },
   email: { type: String, required: true, unique: true },
-  fName: { type: String },
-  lName: { type: String },
+  name: { type: String },
   username: { type: String, unique: true },
   image: String,
   address: {

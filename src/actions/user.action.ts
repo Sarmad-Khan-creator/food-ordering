@@ -60,3 +60,15 @@ export const getUserByClerkId = async (clerkId: string) => {
     throw err.message;
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    await connectToDatabase();
+    const users = await User.find();
+
+    return users;
+  } catch (error) {
+    const err = new MongooseError(error as string);
+    throw err.message;
+  }
+};
