@@ -11,6 +11,7 @@ import React from 'react';
 import ViewUser from './view-user';
 import { IUser } from '@/models/user';
 import EditProfile from './edit-profile';
+import DeleteUser from './delete-user';
 
 type Props = {
   user: IUser;
@@ -27,9 +28,7 @@ const UserDropdownMenu = ({ user }: Props) => {
         <DropdownMenuSeparator />
         <ViewUser user={user} />
         <EditProfile user={user} />
-        <DropdownMenuItem className="cursor-pointer bg-red-700 text-white focus:bg-red-500 focus:text-white">
-          Delete
-        </DropdownMenuItem>
+        <DeleteUser user={user} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -6,7 +6,7 @@ import { CreateUserProps, UpdateUserProps } from '../types/types';
 import User from '../models/user';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { currentUser } from '@clerk/nextjs/server';
+import { clerkClient, currentUser } from '@clerk/nextjs/server';
 
 export const createUser = async (user: CreateUserProps) => {
   try {
@@ -24,17 +24,16 @@ export const updateUser = async (
   updateUserData: UpdateUserProps,
   path: string
 ) => {
-  const { name, image, address, username, phoneNumber } = updateUserData;
+  const { name, address, username, phoneNumber } = updateUserData;
   try {
     await connectToDatabase();
     const user = await User.findOneAndUpdate(
       {
-        clerkId
+        clerkId,
       },
       {
         $set: {
           name,
-          image,
           address,
           username,
           phoneNumber,
@@ -42,6 +41,12 @@ export const updateUser = async (
       },
       { new: true }
     );
+
+    await clerkClient.users.updateUser(clerkId, {
+      firstName: name.split(' ')[0],
+      lastName: name.split(' ')[1],
+      username: username,
+    });
 
     revalidatePath(path);
     return user;
