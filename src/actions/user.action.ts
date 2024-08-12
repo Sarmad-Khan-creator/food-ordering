@@ -7,6 +7,7 @@ import User from '../models/user';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { clerkClient, currentUser } from '@clerk/nextjs/server';
+import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
 export const createUser = async (user: CreateUserProps) => {
   try {
@@ -62,11 +63,21 @@ export const deleteUser = async (clerkId: string, path?: string) => {
     await connectToDatabase();
     await User.deleteOne({ clerkId });
 
-    revalidatePath("/admin/users")
+    revalidatePath('/admin/users');
     return redirect(path!);
   } catch (error) {
     const err = new MongooseError(error as string);
     throw err.message;
+  }
+};
+
+export const deletClerkUser = async (clerkId: string) => {
+  try {
+    await clerkClient.users.deleteUser(clerkId);
+  } catch (error) {
+    if (isClerkAPIResponseError(error)) {
+      throw error.errors[0].message;
+    }
   }
 };
 
