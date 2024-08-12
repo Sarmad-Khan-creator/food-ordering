@@ -11,6 +11,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
 import { IUser } from '@/models/user';
 
 type Props = {
@@ -18,6 +19,22 @@ type Props = {
 };
 
 const DeleteUser = ({ user }: Props) => {
+  const handleDeleteUser = async () => {
+    try {
+      await deletClerkUser(user.clerkId);
+      toast({
+        title: 'User deleted successfully',
+        description: 'User has been deleted successfully.',
+        variant: 'success',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error deleting user',
+        description: error as string,
+        variant: 'destructive',
+      });
+    }
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

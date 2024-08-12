@@ -72,9 +72,9 @@ const ViewUser = ({ user }: Props) => {
           </div>
           <h3 className="font-semibold mt-8">Address:</h3>
 
-          <div className={cn('ml-10', !user.address && 'text-sm')}>
+          <div className={cn('ml-3', !user.address && 'text-sm')}>
             {user.address ? (
-              <p>
+              <p className='block rounded-md border px-2 border-gray-500 bg-black/10'>
                 {user.address.addressLine1} {user.address.city},{' '}
                 {user.address.state}, {user.address.country},{' '}
                 {user.address.zipCode}
