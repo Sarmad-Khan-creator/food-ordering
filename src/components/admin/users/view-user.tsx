@@ -74,14 +74,11 @@ const ViewUser = ({ user }: Props) => {
 
           <div className={cn('ml-10', !user.address && 'text-sm')}>
             {user.address ? (
-              <div className="flex flex-col">
-                <p>{user.address.addressLine1}</p>
-                <p>
-                  {user.address.city}, {user.address.state}
-                </p>
-                <p>{user.address.country}</p>
-                <p>ZIP: {user.address.zipCode}</p>
-              </div>
+              <p>
+                {user.address.addressLine1} {user.address.city},{' '}
+                {user.address.state}, {user.address.country},{' '}
+                {user.address.zipCode}
+              </p>
             ) : (
               'No Address for the current user'
             )}
