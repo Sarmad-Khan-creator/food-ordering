@@ -58,7 +58,7 @@ const DeleteUser = ({ user }: Props) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-700 text-white hover:bg-red-500"
-            onClick={async () => await deletClerkUser(user.clerkId)}
+            onClick={async () => await handleDeleteUser()}
           >
             Continue
           </AlertDialogAction>
