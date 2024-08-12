@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { IUser } from '@/models/user';
+import { clerkClient } from '@clerk/nextjs/server';
 
 type Props = {
   user: IUser;
@@ -41,7 +42,9 @@ const DeleteUser = ({ user }: Props) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-700 text-white hover:bg-red-500"
-            onClick={async () => await deleteUser(user.clerkId, '/admin/users')}
+            onClick={async () =>
+              await clerkClient.users.deleteUser(user.clerkId)
+            }
           >
             Continue
           </AlertDialogAction>

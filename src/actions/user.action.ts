@@ -27,6 +27,13 @@ export const updateUser = async (
   const { name, address, username, phoneNumber } = updateUserData;
   try {
     await connectToDatabase();
+
+    await clerkClient.users.updateUser(clerkId, {
+      firstName: name.split(' ')[0],
+      lastName: name.split(' ')[1],
+      username: username,
+    });
+
     const user = await User.findOneAndUpdate(
       {
         clerkId,
@@ -42,12 +49,6 @@ export const updateUser = async (
       { new: true }
     );
 
-    await clerkClient.users.updateUser(clerkId, {
-      firstName: name.split(' ')[0],
-      lastName: name.split(' ')[1],
-      username: username,
-    });
-
     revalidatePath(path);
     return user;
   } catch (err) {
@@ -61,6 +62,7 @@ export const deleteUser = async (clerkId: string, path?: string) => {
     await connectToDatabase();
     await User.deleteOne({ clerkId });
 
+    revalidatePath("/admin/users")
     return redirect(path!);
   } catch (error) {
     const err = new MongooseError(error as string);
