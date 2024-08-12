@@ -6,7 +6,7 @@ import { CreateUserProps, UpdateUserProps } from '../types/types';
 import User from '../models/user';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { clerkClient, currentUser } from '@clerk/nextjs/server';
+import { clerkClient } from '@clerk/nextjs/server';
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
 export const createUser = async (user: CreateUserProps) => {
@@ -53,6 +53,9 @@ export const updateUser = async (
     revalidatePath(path);
     return user;
   } catch (err) {
+    if (isClerkAPIResponseError(err)) {
+      throw err.errors[0].message;
+    }
     const error = new MongooseError(err as string);
     throw error.message;
   }
