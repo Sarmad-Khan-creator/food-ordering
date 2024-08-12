@@ -10,9 +10,11 @@ export interface IUser extends Document {
   address: {
     addressLine1: string;
     city: string;
+    state: string;
     country: string;
     zipCode: string;
   };
+  phoneNumber: string;
   cart: Schema.Types.ObjectId[];
   wishlist: Schema.Types.ObjectId[];
   orders: Schema.Types.ObjectId[];
@@ -29,9 +31,11 @@ const UserSchema = new Schema({
   address: {
     addressLine1: String,
     city: String,
+    state: String,
     country: String,
     zipCode: String,
   },
+  phoneNumber: String,
   cart: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
   wishlist: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
   orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],

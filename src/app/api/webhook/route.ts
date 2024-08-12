@@ -68,7 +68,7 @@ export async function POST(req: Request) {
     const updatedUser = await updateUser(id, {
       name: `${first_name} ${last_name}` || '',
       image: image_url,
-    });
+    }, "/user/profile");
 
     return NextResponse.json({ message: 'OK', user: updatedUser });
   }

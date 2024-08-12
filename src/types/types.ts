@@ -19,4 +19,13 @@ export type SignUpProps = {
 export type UpdateUserProps = {
   name: string;
   image?: string;
+  username?: string;
+  address?: {
+    addressLine1: string;
+    city: string;
+    state: string;
+    country: string;
+    zipCode: string;
+  };
+  phoneNumber?: string;
 };

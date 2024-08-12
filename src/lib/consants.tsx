@@ -23,3 +23,5 @@ export const adminLinks: SidebarLinks[] = [
     icon: <CookieIcon />,
   },
 ];
+
+export const roles = ['USER', 'ADMIN'];

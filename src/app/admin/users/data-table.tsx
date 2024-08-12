@@ -1,12 +1,10 @@
 'use client';
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-
+import RolePopover from '@/components/admin/users/role-popover';
+import UserDropdownMenu from '@/components/admin/users/user-dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverTrigger } from '@/components/ui/popover';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -15,64 +13,60 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { IUser } from '@/models/user';
+import { User2 } from 'lucide-react';
+import Image from 'next/image';
+import { Suspense, useState } from 'react';
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableProps {
+  data: IUser[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
+export function DataTable({ data }: DataTableProps) {
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
+          <TableRow>
+            <TableHead>Image</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead />
+          </TableRow>
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+          {data.map((d) => (
+            <TableRow key={d.clerkId}>
+              <TableCell>
+                {d.image ? (
+                  <Suspense
+                    fallback={
+                      <Skeleton className="w-[50] h-[50] rounded-full bg-gray-400" />
+                    }
+                  >
+                    <Image
+                      src={d.image}
+                      alt="user image"
+                      width={50}
+                      height={50}
+                      className="rounded-full"
+                    />
+                  </Suspense>
+                ) : (
+                  <User2 />
+                )}
+              </TableCell>
+              <TableCell>{d.name}</TableCell>
+              <TableCell>{d.email}</TableCell>
+              <TableCell>
+                <RolePopover user={d} />
+              </TableCell>
+              <TableCell>
+                <UserDropdownMenu user={d} />
               </TableCell>
             </TableRow>
-          )}
+          ))}
         </TableBody>
       </Table>
     </div>

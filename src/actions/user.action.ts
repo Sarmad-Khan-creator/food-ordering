@@ -6,6 +6,7 @@ import { CreateUserProps, UpdateUserProps } from '../types/types';
 import User from '../models/user';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { currentUser } from '@clerk/nextjs/server';
 
 export const createUser = async (user: CreateUserProps) => {
   try {
@@ -20,17 +21,29 @@ export const createUser = async (user: CreateUserProps) => {
 
 export const updateUser = async (
   clerkId: string,
-  updateUserData: UpdateUserProps
+  updateUserData: UpdateUserProps,
+  path: string
 ) => {
+  const { name, image, address, username, phoneNumber } = updateUserData;
   try {
     await connectToDatabase();
     const user = await User.findOneAndUpdate(
-      { clerkId },
-      { $set: updateUserData },
+      {
+        clerkId
+      },
+      {
+        $set: {
+          name,
+          image,
+          address,
+          username,
+          phoneNumber,
+        },
+      },
       { new: true }
     );
 
-    revalidatePath('/user/profile');
+    revalidatePath(path);
     return user;
   } catch (err) {
     const error = new MongooseError(err as string);
@@ -67,6 +80,25 @@ export const getAllUsers = async () => {
     const users = await User.find();
 
     return users;
+  } catch (error) {
+    const err = new MongooseError(error as string);
+    throw err.message;
+  }
+};
+
+export const changeUserRole = async (clerkId: string, role: string) => {
+  try {
+    connectToDatabase();
+    await User.findOneAndUpdate(
+      {
+        clerkId,
+      },
+      {
+        role,
+      }
+    );
+
+    revalidatePath('/admin/users');
   } catch (error) {
     const err = new MongooseError(error as string);
     throw err.message;

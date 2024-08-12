@@ -21,3 +21,18 @@ export const ForgotPasswordSchema = z.object({
   code: z.string().describe('Code'),
   password: z.string().describe('Password'),
 });
+
+export const EditProfileFormSchema = z.object({
+  firstName: z.string().describe('First Name'),
+  lastName: z.string().describe('Last Name'),
+  username: z.string().describe('Username'),
+  email: z.string().email().describe('Email'),
+  address: z.object({
+    addressLine1: z.string().max(150, 'Characters exceed'),
+    city: z.string().describe('City'),
+    state: z.string().describe('State'),
+    country: z.string().describe('Country'),
+    zipCode: z.string().describe('Zip Code'),
+  }),
+  phoneNumber: z.string().describe('Phone Number'),
+});
