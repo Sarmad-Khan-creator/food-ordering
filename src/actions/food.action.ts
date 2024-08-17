@@ -70,7 +70,6 @@ export const getAllFood = async () => {
 };
 
 export const changeFoodFeatured = async (foodId: string, featured: boolean) => {
-  console.log('ID: ', foodId);
   try {
     await connectToDatabase();
     await Food.findByIdAndUpdate(
