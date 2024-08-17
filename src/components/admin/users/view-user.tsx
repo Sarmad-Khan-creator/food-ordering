@@ -62,7 +62,7 @@ const ViewUser = ({ user }: Props) => {
                   width={25}
                   height={20}
                 />
-                <p>{user.username ? user.name : '--------'}</p>
+                <p>{user.username ? user.username : '--------'}</p>
               </div>
               <div className="flex gap-1">
                 <Mail />

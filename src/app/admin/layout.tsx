@@ -1,5 +1,7 @@
 import { getUserByClerkId } from '@/actions/user.action';
+import Infobar from '@/components/admin/info-bar';
 import AdminSidebar from '@/components/admin/sidebar';
+import { UserButton } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
@@ -14,7 +16,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
     <div className="min-h-screen flex w-full">
       <AdminSidebar />
       <div className="flex flex-col gap-5 w-full">
-        <div className="h-[80px] w-full bg-blue-400"></div>
+        <Infobar />
         {children}
       </div>
     </div>

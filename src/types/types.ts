@@ -29,3 +29,14 @@ export type UpdateUserProps = {
   };
   phoneNumber?: string;
 };
+
+export type FoodProps = {
+  name: string;
+  price: number;
+  discountPercent?: number;
+  quantity: number;
+  category: string;
+  images: string[];
+  featured: boolean;
+  description: string;
+};

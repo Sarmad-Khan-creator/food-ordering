@@ -36,3 +36,14 @@ export const EditProfileFormSchema = z.object({
   }),
   phoneNumber: z.string().describe('Phone Number'),
 });
+
+export const AddNewFoodSchema = z.object({
+  name: z.string().describe('Name'),
+  price: z.string().describe('Price'),
+  discountPercent: z.string().optional(),
+  quantity: z.string().describe('Quantity'),
+  category: z.string().describe('Category'),
+  images: z.array(z.string()).describe('Images'),
+  description: z.string().max(250, 'Characters exceed'),
+  featured: z.boolean().describe('Featured')
+});

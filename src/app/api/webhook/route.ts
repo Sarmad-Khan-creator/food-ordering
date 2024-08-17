@@ -63,12 +63,17 @@ export async function POST(req: Request) {
   }
 
   if (eventType === 'user.updated') {
-    const { id, image_url, first_name, last_name } = evt.data;
+    const { id, image_url, first_name, last_name, username } = evt.data;
 
-    const updatedUser = await updateUser(id, {
-      name: `${first_name} ${last_name}` || '',
-      image: image_url,
-    }, "/user/profile");
+    const updatedUser = await updateUser(
+      id,
+      {
+        name: `${first_name} ${last_name}` || '',
+        username: username!,
+        image: image_url,
+      },
+      '/user/profile'
+    );
 
     return NextResponse.json({ message: 'OK', user: updatedUser });
   }

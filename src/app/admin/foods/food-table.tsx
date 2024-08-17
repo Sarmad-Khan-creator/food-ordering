@@ -1,7 +1,5 @@
 'use client';
-
-import RolePopover from '@/components/admin/users/role-popover';
-import UserDropdownMenu from '@/components/admin/users/user-dropdown-menu';
+import { IFood } from '@/models/food';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -11,16 +9,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { IUser } from '@/models/user';
 import { User2 } from 'lucide-react';
 import Image from 'next/image';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
+import FeaturedPopover from '@/components/admin/foods/featured-popover';
+import FoodDropdown from '@/components/admin/foods/food-dropdown';
+import { ObjectId } from 'mongoose';
 
-interface DataTableProps {
-  data: IUser[];
-}
+type Props = {
+  foods: IFood[];
+};
 
-export function DataTable({ data }: DataTableProps) {
+const FoodTable = ({ foods }: Props) => {
   return (
     <div className="rounded-md border">
       <Table>
@@ -28,27 +28,28 @@ export function DataTable({ data }: DataTableProps) {
           <TableRow>
             <TableHead>Image</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Featured</TableHead>
             <TableHead />
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((d) => (
-            <TableRow key={d.clerkId}>
+          {foods.map((d) => (
+            <TableRow key={d.id}>
               <TableCell>
-                {d.image ? (
+                {d.images ? (
                   <Suspense
                     fallback={
-                      <Skeleton className="w-[50] h-[50] rounded-full bg-gray-400" />
+                      <Skeleton className="w-[70] h-[70] rounded-md bg-gray-400" />
                     }
                   >
                     <Image
-                      src={d.image}
+                      src={d.images[0]}
                       alt="user image"
-                      width={50}
-                      height={50}
-                      className="rounded-full"
+                      width={70}
+                      height={70}
+                      className="rounded-md"
                     />
                   </Suspense>
                 ) : (
@@ -56,12 +57,16 @@ export function DataTable({ data }: DataTableProps) {
                 )}
               </TableCell>
               <TableCell>{d.name}</TableCell>
-              <TableCell>{d.email}</TableCell>
+              <TableCell>{d.price}</TableCell>
+              <TableCell>{d.category}</TableCell>
               <TableCell>
-                <RolePopover user={d} />
+                <FeaturedPopover
+                  foodId={d._id as string}
+                  initialFeatured={d.featured}
+                />
               </TableCell>
               <TableCell>
-                <UserDropdownMenu user={d} />
+                <FoodDropdown food={d} />
               </TableCell>
             </TableRow>
           ))}
@@ -69,4 +74,6 @@ export function DataTable({ data }: DataTableProps) {
       </Table>
     </div>
   );
-}
+};
+
+export default FoodTable;

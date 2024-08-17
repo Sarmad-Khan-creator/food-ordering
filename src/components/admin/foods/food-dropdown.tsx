@@ -1,3 +1,4 @@
+import { IFood } from '@/models/food';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,31 +7,29 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import React from 'react';
-import ViewUser from './view-user';
-import { IUser } from '@/models/user';
-import EditProfile from './edit-profile';
-import DeleteUser from './delete-user';
+import ViewFood from './view-food';
+import EditFood from './edit-food';
+import DeleteFood from './delete-food';
 
 type Props = {
-  user: IUser;
+  food: IFood;
 };
 
-const UserDropdownMenu = ({ user }: Props) => {
+const FoodDropdown = ({ food }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="cursor-pointer">
         <MoreHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>User Account</DropdownMenuLabel>
+        <DropdownMenuLabel>Food Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <ViewUser user={user} />
-        <EditProfile user={user} />
-        <DeleteUser user={user} />
+        <ViewFood food={food} />
+        <EditFood food={food} />
+        <DeleteFood food={food} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
-export default UserDropdownMenu;
+export default FoodDropdown;

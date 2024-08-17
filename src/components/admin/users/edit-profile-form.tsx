@@ -225,6 +225,7 @@ const EditProfileForm = ({ user }: Props) => {
           <Button
             type="submit"
             className="bg-green-700 hover:bg-green-500 text-white w-[100px]"
+            disabled={isSubmitting}
           >
             {isSubmitting ? <Loader2 className="animate-spin" /> : 'Continue'}
           </Button>

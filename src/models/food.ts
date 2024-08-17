@@ -6,6 +6,7 @@ export interface IFood extends Document {
   discountPercent: number;
   quantity: number;
   category: string;
+  description: string;
   images: string[];
   rating: number;
   reviews: Schema.Types.ObjectId[];
@@ -25,8 +26,9 @@ const FoodSchema = new Schema<IFood>({
   category: {
     type: String,
     required: [true, 'The category is required'],
-    enum: ['Burger', 'Schwarma', 'Pizza'],
+    enum: ['burger', 'schwarma', 'pizza'],
   },
+  description: String,
   images: [String],
   rating: { type: Number, default: 0 },
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
