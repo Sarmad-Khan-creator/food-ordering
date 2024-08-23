@@ -33,7 +33,7 @@ const ViewUser = ({ user }: Props) => {
           Profile
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{user.name} Profile</DialogTitle>
         </DialogHeader>
@@ -74,7 +74,7 @@ const ViewUser = ({ user }: Props) => {
 
           <div className={cn('ml-3', !user.address && 'text-sm')}>
             {user.address ? (
-              <p className='block rounded-md border px-2 border-gray-500 bg-black/10'>
+              <p className="block rounded-md border px-2 border-gray-500 bg-black/10">
                 {user.address.addressLine1} {user.address.city},{' '}
                 {user.address.state}, {user.address.country},{' '}
                 {user.address.zipCode}
@@ -83,13 +83,14 @@ const ViewUser = ({ user }: Props) => {
               'No Address for the current user'
             )}
           </div>
-          <div className="mt-8 flex flex-col">
+          <div className="mt-8 flex flex-col gap-1">
             <h3 className="font-semibold">Cart: ({user.cart.length})</h3>
             {user.cart.length
               ? user.cart.map(async (c) => {
-                  const food = await getFoodById(c);
+                  const foodInCart = await getFoodById(c);
+                  const food = JSON.parse(foodInCart);
                   return (
-                    <div key={food.id} className="flex gap-2 items-center">
+                    <div key={food._id} className="flex gap-2 items-center">
                       <Image
                         src={food.images[0]}
                         alt="product image"
@@ -105,15 +106,16 @@ const ViewUser = ({ user }: Props) => {
                 })
               : 'No Food in Cart'}
           </div>
-          <div className="mt-8 flex flex-col">
+          <div className="mt-8 flex flex-col gap-1">
             <h3 className="font-semibold">
               Wishlist: ({user.wishlist.length})
             </h3>
             {user.wishlist.length
               ? user.wishlist.map(async (w) => {
-                  const food = await getFoodById(w);
+                  const wishlistedFood = await getFoodById(w);
+                  const food = JSON.parse(wishlistedFood);
                   return (
-                    <div key={food.id} className="flex gap-2 items-center">
+                    <div key={food._id} className="flex gap-2 items-center">
                       <Image
                         src={food.images[0]}
                         alt="product image"

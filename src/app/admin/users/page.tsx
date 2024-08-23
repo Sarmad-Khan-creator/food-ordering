@@ -12,7 +12,7 @@ const Users = async () => {
       <h1 className="text-3xl font-semibold mb-3">All Users</h1>
       <Search placeholder="Users" />
       <div className="mt-5">
-        <DataTable data={users} />
+        <DataTable data={JSON.parse(users)} />
       </div>
     </section>
   );

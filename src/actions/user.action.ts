@@ -6,7 +6,7 @@ import { CreateUserProps, UpdateUserProps } from '../types/types';
 import User from '../models/user';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { clerkClient } from '@clerk/nextjs/server';
+import { clerkClient, currentUser } from '@clerk/nextjs/server';
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
 export const createUser = async (user: CreateUserProps) => {
@@ -88,7 +88,7 @@ export const getUserByClerkId = async (clerkId: string) => {
   try {
     await connectToDatabase();
     const user = await User.findOne({ clerkId });
-    return user;
+    return JSON.stringify(user);
   } catch (error) {
     const err = new MongooseError(error as string);
     throw err.message;
@@ -100,7 +100,7 @@ export const getAllUsers = async () => {
     await connectToDatabase();
     const users = await User.find();
 
-    return users;
+    return JSON.stringify(users);
   } catch (error) {
     const err = new MongooseError(error as string);
     throw err.message;
@@ -120,6 +120,70 @@ export const changeUserRole = async (clerkId: string, role: string) => {
     );
 
     revalidatePath('/admin/users');
+  } catch (error) {
+    const err = new MongooseError(error as string);
+    throw err.message;
+  }
+};
+
+export const addFoodToWishlist = async (foodId: string, path: string) => {
+  try {
+    const user = await currentUser();
+    await connectToDatabase();
+    await User.findOneAndUpdate(
+      { clerkId: user?.id },
+      { $push: { wishlist: foodId } }
+    );
+
+    revalidatePath(path);
+  } catch (error) {
+    const err = new MongooseError(error as string);
+    throw err.message;
+  }
+};
+
+export const removeFoodFromWishlist = async (foodId: string, path: string) => {
+  try {
+    const user = await currentUser();
+    await connectToDatabase();
+    await User.findOneAndUpdate(
+      { clerkId: user?.id },
+      { $pull: { wishlist: foodId } }
+    );
+
+    revalidatePath(path);
+  } catch (error) {
+    const err = new MongooseError(error as string);
+    throw err.message;
+  }
+};
+
+export const addFoodToCart = async (foodId: string, path: string) => {
+  try {
+    const user = await currentUser();
+    await connectToDatabase();
+    await User.findOneAndUpdate(
+      { clerkId: user?.id },
+      { $push: { cart: foodId } }
+    );
+
+    revalidatePath(path);
+  } catch (error) {
+    const err = new MongooseError(error as string);
+    throw err.message;
+  }
+};
+
+export const removeFoodFromCart = async (foodId: string, path: string) => {
+  try {
+    const user = await currentUser();
+    await connectToDatabase();
+    await User.findOneAndUpdate(
+      { clerkId: user?.id },
+      { $pull: { cart: foodId } }
+    );
+
+    revalidatePath(path);
   } catch (error) {
     const err = new MongooseError(error as string);
     throw err.message;

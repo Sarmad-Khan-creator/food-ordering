@@ -1,17 +1,17 @@
 'use server';
 
-import { connectToDatabase } from '@/db/db';
+import {connectToDatabase} from '@/db/db';
 import Food from '@/models/food';
-import { FoodProps } from '@/types/types';
-import { MongooseError, ObjectId } from 'mongoose';
-import { revalidatePath } from 'next/cache';
+import {FoodProps} from '@/types/types';
+import {MongooseError, ObjectId} from 'mongoose';
+import {revalidatePath} from 'next/cache';
 
-export const getFoodById = async (id: ObjectId) => {
+export const getFoodById = async (id: string) => {
   try {
     await connectToDatabase();
     const food = await Food.findById(id);
 
-    return food;
+    return JSON.stringify(food);
   } catch (error) {
     const err = new MongooseError(error as string);
     throw err.message;
@@ -47,10 +47,10 @@ export const updateFood = async (id: string, data: Partial<FoodProps>) => {
           description: data.description,
         },
       },
-      { new: true }
+      {new: true}
     );
 
-    revalidatePath("/admin/foods")
+    revalidatePath('/admin/foods');
   } catch (error) {
     const err = new MongooseError(error as string);
     throw err.message;
@@ -104,3 +104,37 @@ export const deleteFood = async (foodId: string) => {
     throw err.message;
   }
 };
+
+export const getFeaturedFoods = async () => {
+  try {
+    await connectToDatabase()
+    const foods = await Food.find({
+      featured: true,
+    });
+
+    console.log(foods)
+
+    return foods
+  } catch (error) {
+    const err = new MongooseError(error as string);
+    throw err.message;
+  }
+};
+
+export const getFoodRating = async (foodId: string) => {
+  try {
+    const updatedFood = await Food.aggregate([
+      {$match: {_id: foodId}},
+      {$project: {_id: 0, rating: 1}},
+      {$unwind: '$reviews'},
+      {
+        $lookup: {
+          from: "review", localField: "reviews", foreignField: "_id", as: "reivew"
+        }
+      }
+    ])
+  } catch (e) {
+    const error = new MongooseError(e as string)
+    throw error.message
+  }
+}

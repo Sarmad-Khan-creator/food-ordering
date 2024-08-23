@@ -14,7 +14,7 @@ import {
 import { IUser } from '@/models/user';
 import { User2 } from 'lucide-react';
 import Image from 'next/image';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 
 interface DataTableProps {
   data: IUser[];

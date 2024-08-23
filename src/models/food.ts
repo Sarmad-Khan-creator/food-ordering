@@ -30,7 +30,6 @@ const FoodSchema = new Schema<IFood>({
   },
   description: String,
   images: [String],
-  rating: { type: Number, default: 0 },
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
   featured: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
